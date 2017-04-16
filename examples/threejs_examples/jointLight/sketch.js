@@ -68,10 +68,10 @@ function initEnvironment() {
 
 	var container = document.getElementById( 'container' );
 
-	// add performance stats to page 
+	// add performance stats to page
 	stats = new Stats();
 	container.appendChild( stats.dom );
-	
+
 	// three.js camera
 	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 100 );
 	camera.position.x = -4;
@@ -90,7 +90,7 @@ function initEnvironment() {
 		emissiveIntensity: 1,
 		color: 0x000000
 	});
-	
+
 	bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
 	bulbLight.position.set( 0, 2, 0 );
 	bulbLight.castShadow = true;
@@ -98,7 +98,7 @@ function initEnvironment() {
 
 	// add hemispheric light
 	hemiLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 0.02 );
-	scene.add( hemiLight );	
+	scene.add( hemiLight );
 
 	// three.js renderer
 	renderer = new THREE.WebGLRenderer();
@@ -196,7 +196,7 @@ function initSpheres() {
 	// create ball 4
 	var ballGeometry4 = new THREE.SphereGeometry( 0.3, 32, 32 );
 	ballMesh4 = new THREE.Mesh( ballGeometry4, ballMat4 );
-	ballMesh4.position.set(-1, 0.3, 5);  
+	ballMesh4.position.set(-1, 0.3, 5);
 	ballMesh4.rotation.y = Math.PI;
 	ballMesh4.castShadow = true;
 	scene.add( ballMesh4 );
@@ -208,7 +208,7 @@ function initSkeleton() {
 
 	// start lines at random positions
 
-	// one line for spine and left leg 
+	// one line for spine and left leg
 
 	var geometryLine = new THREE.Geometry();
 	geometryLine.vertices.push(new THREE.Vector3(-1, 0, 0));
@@ -230,7 +230,7 @@ function initSkeleton() {
 	geometryLine1.vertices.push(new THREE.Vector3(1, 0, 0));
 	geometryLine1.vertices.push(new THREE.Vector3(1, 0, 0));
 	geometryLine1.vertices.push(new THREE.Vector3(1, 0, 0));
-	
+
 	line1 = new THREE.Line(geometryLine1, materialLine);
 	scene.add(line1);
 
@@ -242,7 +242,7 @@ function initSkeleton() {
 	geometryLine2.vertices.push(new THREE.Vector3(1, 0, 0));
 	geometryLine2.vertices.push(new THREE.Vector3(1, 0, 0));
 	geometryLine2.vertices.push(new THREE.Vector3(1, 0, 0));
-	
+
 	line2 = new THREE.Line(geometryLine2, materialLine);
 	scene.add(line2);
 
@@ -254,14 +254,14 @@ function initSkeleton() {
 	geometryLine3.vertices.push(new THREE.Vector3(1, 0, 0));
 	geometryLine3.vertices.push(new THREE.Vector3(1, 0, 0));
 	geometryLine3.vertices.push(new THREE.Vector3(1, 0, 0));
-	
+
 	line3 = new THREE.Line(geometryLine3, materialLine);
 	scene.add(line3);
 }
 
 function initKinectron() {
  	// Define and create an instance of kinectron
-  var kinectronIpAddress = ""; // FILL IN YOUR KINECTRON IP ADDRESS HERE
+  var kinectronIpAddress = "172.16.226.135"; // FILL IN YOUR KINECTRON IP ADDRESS HERE
   kinectron = new Kinectron(kinectronIpAddress);
 
   // Connect to the microstudio
@@ -271,15 +271,15 @@ function initKinectron() {
   kinectron.makeConnection();
 
   // Start tracked bodies and set callback
-  kinectron.startTrackedBodies(drawJoints);  
+  kinectron.startTrackedBodies(drawJoints);
 }
 
 
-function drawJoints(data) { 
+function drawJoints(data) {
 
 	// update line skeleton with incoming joint data
 
-	// spine and left leg 
+	// spine and left leg
 
 	line.geometry.vertices[0].x = data.joints[3].cameraX;
 	line.geometry.vertices[0].y = data.joints[3].cameraY;
@@ -317,7 +317,7 @@ function drawJoints(data) {
 	line.geometry.vertices[6].y = data.joints[15].cameraY;
 	line.geometry.vertices[6].z = data.joints[15].cameraZ;
 
-	// left arm 
+	// left arm
 
 	line1.geometry.vertices[0].x = data.joints[20].cameraX;
 	line1.geometry.vertices[0].y = data.joints[20].cameraY;
@@ -340,7 +340,7 @@ function drawJoints(data) {
 	line1.geometry.vertices[4].z = data.joints[7].cameraZ;
 
 
-	// right arm 
+	// right arm
 
 	line2.geometry.vertices[0].x = data.joints[20].cameraX;
 	line2.geometry.vertices[0].y = data.joints[20].cameraY;
@@ -362,7 +362,7 @@ function drawJoints(data) {
 	line2.geometry.vertices[4].y = data.joints[11].cameraY;
 	line2.geometry.vertices[4].z = data.joints[11].cameraZ;
 
-	// right leg 
+	// right leg
 
 	line3.geometry.vertices[0].x = data.joints[0].cameraX;
 	line3.geometry.vertices[0].y = data.joints[0].cameraY;
@@ -384,7 +384,7 @@ function drawJoints(data) {
 	line3.geometry.vertices[4].y = data.joints[19].cameraY;
 	line3.geometry.vertices[4].z = data.joints[19].cameraZ;
 
-	// update all skeleton lines 
+	// update all skeleton lines
 
 	line.geometry.verticesNeedUpdate = true;
 	line1.geometry.verticesNeedUpdate = true;
@@ -422,12 +422,12 @@ function animate() {
 function render() {
 
 	// to allow for very bright scenes.
-	renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 ); 
-	
+	renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 );
+
 	// update shadows
 	renderer.shadowMap.enabled = params.shadows;
 	bulbLight.castShadow = params.shadows;
-	
+
 	if( params.shadows !== previousShadowMap ) {
 		ballMat.needsUpdate = true;
 		ballMat2.needsUpdate = true;
