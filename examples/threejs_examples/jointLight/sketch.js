@@ -48,7 +48,7 @@ var params = {
 	shadows: true,
 	exposure: 0.68,
 	bulbPower: Object.keys( bulbLuminousPowers )[4],
-	hemiIrradiance: Object.keys( hemiLuminousIrradiances )[0]
+	hemiIrradiance: Object.keys( hemiLuminousIrradiances )[2]
 };
 
 init();
@@ -82,7 +82,7 @@ function initEnvironment() {
 	scene = new THREE.Scene();
 
 	// create light bulb
-	var bulbGeometry = new THREE.SphereGeometry( 0.05, 16, 8 );
+	var bulbGeometry = new THREE.SphereGeometry( 0.02, 16, 8 );
 	bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
 
 	bulbMat = new THREE.MeshStandardMaterial( {
@@ -392,11 +392,13 @@ function drawJoints(data) {
 	line3.geometry.verticesNeedUpdate = true;
 
 	// update position of light on right hand
+bulbLight.position.x = mousex;
+bulbLight.position.y = mousey;
+bulbLight.position.z = mousez;
 
-	bulbLight.position.x = data.joints[kinectron.HANDRIGHT].cameraX;
-	bulbLight.position.y = data.joints[kinectron.HANDRIGHT].cameraY;
-	bulbLight.position.z = data.joints[kinectron.HANDRIGHT].cameraZ;
-	console.log(bulbLight.position);
+	// bulbLight.position.x = data.joints[kinectron.HANDRIGHT].cameraX;
+	// bulbLight.position.y = data.joints[kinectron.HANDRIGHT].cameraY;
+	// bulbLight.position.z = data.joints[kinectron.HANDRIGHT].cameraZ;
 }
 
 function onWindowResize() {
