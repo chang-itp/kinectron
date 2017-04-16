@@ -396,6 +396,7 @@ function drawJoints(data) {
 	bulbLight.position.x = data.joints[kinectron.HANDRIGHT].cameraX;
 	bulbLight.position.y = data.joints[kinectron.HANDRIGHT].cameraY;
 	bulbLight.position.z = data.joints[kinectron.HANDRIGHT].cameraZ;
+	console.log(bulbLight.position);
 }
 
 function onWindowResize() {
