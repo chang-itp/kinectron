@@ -7,10 +7,10 @@ bulbLight, bulbMat, ambientLight, hemiLight,
 object, loader, stats;
 
 // materials for globes
-var ballMat, ballMat2, ballMat3, ballMat4;
+var ballMat; //ballMat2, ballMat3, ballMat4;
 
 // globes
-var ballMesh, ballMesh2, ballMesh3;
+var ballMesh; //ballMesh2, ballMesh3;
 
 // lines for skeleton
 var line, line1, line2, line3;
@@ -125,7 +125,8 @@ function initSpheres() {
 	ballMat = new THREE.MeshStandardMaterial( {
 		color: 0xffffff,
 		roughness: 0.5,
-		metalness: 1.0
+		metalness: 1.0,
+		transparency: true
 	});
 	textureLoader.load( "../shared/textures/earth_atmos_2048.jpg", function( map ) {
 		map.anisotropy = 4;
@@ -139,38 +140,40 @@ function initSpheres() {
 	} );
 
 	// ball mat 2
-	ballMat2 = new THREE.MeshStandardMaterial( {
-		color: 0xffffff,
-		roughness: 0.5,
-		metalness: 1.0
-	});
+	// ballMat2 = new THREE.MeshStandardMaterial( {
+	// 	color: 0xffffff,
+	// 	roughness: 0.5,
+	// 	metalness: 1.0
+	// });
 
 	// ball mat 3
-	ballMat3 = new THREE.MeshStandardMaterial( {
-		color: 0xff00ff,
-		roughness: 0.5,
-		metalness: 0.5
-	});
+	// ballMat3 = new THREE.MeshStandardMaterial( {
+	// 	color: 0xff00ff,
+	// 	roughness: 0.5,
+	// 	metalness: 0.5
+	// });
 
 	// ball mat 4
-	ballMat4 = new THREE.MeshStandardMaterial( {
-		color: 0xffffff,
-		roughness: 0.5,
-		metalness: 1.0
-	});
-	textureLoader.load( "../shared/textures/earth_lights_2048.png", function( map ) {
-		map.anisotropy = 4;
-		ballMat4.map = map;
-		ballMat4.needsUpdate = true;
-	} );
-	textureLoader.load( "../shared/textures/earth_specular_2048.jpg", function( map ) {
-		map.anisotropy = 4;
-		ballMat4.metalnessMap = map;
-		ballMat4.needsUpdate = true;
-	} );
+	// ballMat4 = new THREE.MeshStandardMaterial( {
+	// 	color: 0xffffff,
+	// 	roughness: 0.5,
+	// 	metalness: 1.0
+	// });
+	// textureLoader.load( "../shared/textures/earth_lights_2048.png", function( map ) {
+	// 	map.anisotropy = 4;
+	// 	ballMat4.map = map;
+	// 	ballMat4.needsUpdate = true;
+	// } );
+	// textureLoader.load( "../shared/textures/earth_specular_2048.jpg", function( map ) {
+	// 	map.anisotropy = 4;
+	// 	ballMat4.metalnessMap = map;
+	// 	ballMat4.needsUpdate = true;
+	// } );
 
 	// create ball 1
 	var ballGeometry = new THREE.SphereGeometry( 0.5, 32, 32 );
+
+
 	ballMesh = new THREE.Mesh( ballGeometry, ballMat );
 	ballMesh.position.set( 1, 0.5, 1 );
 	ballMesh.rotation.y = Math.PI;
@@ -178,28 +181,28 @@ function initSpheres() {
 	scene.add( ballMesh );
 
 	// create ball 2
-	var ballGeometry2 = new THREE.SphereGeometry( 0.2, 32, 32 );
-	ballMesh2 = new THREE.Mesh( ballGeometry2, ballMat2 );
-	ballMesh2.position.set(0.5, 0.4, 2);
-	ballMesh2.rotation.y = Math.PI;
-	ballMesh2.castShadow = true;
-	scene.add( ballMesh2 );
+	// var ballGeometry2 = new THREE.SphereGeometry( 0.2, 32, 32 );
+	// ballMesh2 = new THREE.Mesh( ballGeometry2, ballMat2 );
+	// ballMesh2.position.set(0.5, 0.4, 2);
+	// ballMesh2.rotation.y = Math.PI;
+	// ballMesh2.castShadow = true;
+	// scene.add( ballMesh2 );
 
 	// create ball 3
-	var ballGeometry3 = new THREE.SphereGeometry( 0.3, 32, 32 );
-	ballMesh3 = new THREE.Mesh( ballGeometry3, ballMat3 );
-	ballMesh3.position.set( -0.5, 0.2, 3 );
-	ballMesh3.rotation.y = Math.PI;
-	ballMesh3.castShadow = true;
-	scene.add( ballMesh3 );
+	// var ballGeometry3 = new THREE.SphereGeometry( 0.3, 32, 32 );
+	// ballMesh3 = new THREE.Mesh( ballGeometry3, ballMat3 );
+	// ballMesh3.position.set( -0.5, 0.2, 3 );
+	// ballMesh3.rotation.y = Math.PI;
+	// ballMesh3.castShadow = true;
+	// scene.add( ballMesh3 );
 
 	// create ball 4
-	var ballGeometry4 = new THREE.SphereGeometry( 0.3, 32, 32 );
-	ballMesh4 = new THREE.Mesh( ballGeometry4, ballMat4 );
-	ballMesh4.position.set(-1, 0.3, 5);
-	ballMesh4.rotation.y = Math.PI;
-	ballMesh4.castShadow = true;
-	scene.add( ballMesh4 );
+	// var ballGeometry4 = new THREE.SphereGeometry( 0.3, 32, 32 );
+	// ballMesh4 = new THREE.Mesh( ballGeometry4, ballMat4 );
+	// ballMesh4.position.set(-1, 0.3, 5);
+	// ballMesh4.rotation.y = Math.PI;
+	// ballMesh4.castShadow = true;
+	// scene.add( ballMesh4 );
 
 }
 
@@ -420,6 +423,22 @@ function animate() {
 
 
 function render() {
+	var posBall = ballMesh.position;
+  var posJoint = bulbLight.position;
+  var d = posBall.distanceTo( posJoint );
+	console.log(d);
+
+	if (d < 0.7){
+		if(ballMesh.material.opacity < 0.01){
+			ballMesh.material.opacity = 0;
+			// ballMesh.position.x = -ballMesh.position.x;
+			// ballMesh.position.y = -ballMesh.position.y;
+			// ballMesh.position.z = -ballMesh.position.z;
+			// console.log(opacity);
+		}else{
+			ballMesh.material.opacity -= 0.01;
+	}
+};
 
 	// to allow for very bright scenes.
 	renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 );
@@ -430,9 +449,9 @@ function render() {
 
 	if( params.shadows !== previousShadowMap ) {
 		ballMat.needsUpdate = true;
-		ballMat2.needsUpdate = true;
-		ballMat3.needsUpdate = true;
-		ballMat4.needsUpdate = true;
+		// ballMat2.needsUpdate = true;
+		// ballMat3.needsUpdate = true;
+		// ballMat4.needsUpdate = true;
 		previousShadowMap = params.shadows;
 	}
 
@@ -443,9 +462,9 @@ function render() {
 
 	// rotate globes
 	ballMesh.rotation.y += 0.005;
-	ballMesh2.rotation.y -= 0.007;
-	ballMesh3.rotation.x += 0.004;
-	ballMesh4.rotation.x += 0.02;
+	// ballMesh2.rotation.y -= 0.007;
+	// ballMesh3.rotation.x += 0.004;
+	//ballMesh4.rotation.x += 0.02;
 
 	// render scene
 	renderer.render( scene, camera );
