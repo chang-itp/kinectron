@@ -187,7 +187,7 @@ function init() {
     birds = [];
     boids = [];
 
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 100; i++) {
         boid = boids[i] = new Boid();
         boid.position.x = Math.random() * 400 - 200;
         boid.position.y = Math.random() * 400 - 200;
@@ -201,7 +201,7 @@ function init() {
             color: Math.random() * 0xffffff,
             side: THREE.DoubleSide
         }));
-        bird.phase = Math.floor(Math.random() * 62.83);
+        bird.geometry.scale(1,1,1);
         scene.add(bird);
     }
 
