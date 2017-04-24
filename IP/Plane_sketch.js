@@ -21,7 +21,7 @@ var Boid = function() {
         _height = height;
         _depth = depth;
     };
-    //draw the bird
+    //draw the plane
 
     this.run = function(boids) {
         if (_avoidWalls) {
@@ -173,7 +173,7 @@ var SCREEN_WIDTH = window.innerWidth,
     SCREEN_HEIGHT = window.innerHeight,
     SCREEN_WIDTH_HALF = SCREEN_WIDTH / 2,
     SCREEN_HEIGHT_HALF = SCREEN_HEIGHT / 2;
-var camera, scene, renderer, birds, bird;
+var camera, scene, renderer, planes, plane;
 var boid, boids;
 var planeMat;
 
@@ -185,35 +185,36 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
     camera.position.z = 450;
     scene = new THREE.Scene();
-    // White directional light at half intensity shining from the top.
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
-    directionalLight.position.x = 0;
-    directionalLight.position.y = 0;
-    directionalLight.position.z = 500;
-    scene.add(directionalLight);
 
-    birds = [];
+
+    var light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.5);
+    light.position.set(0.5, 1, 0.75);
+    scene.add(light);
+
+    var light = new THREE.DirectionalLight(0xefefff, 0.7);
+    light.position.set(1, 1, 1).normalize();
+    scene.add(light);
+    var light = new THREE.DirectionalLight(0xffefef, 1);
+    light.position.set(-1, -1, -1).normalize();
+    scene.add(light);
+
+
+    planes = [];
     boids = [];
 
-    var textureLoader = new THREE.TextureLoader();
-    //
+
     planeMat = new THREE.MeshStandardMaterial({
         //color: Math.random()*0xCCCCFF,
+        metalness: 0,
+        emissive: 1,
         vertexColors: THREE.FaceColors,
+
         side: THREE.DoubleSide
     });
-    //
-    textureLoader.load("./planetexture/fold.jpg", function(map) {
-        map.anisotropy = 4;
-        planeMat.map = map;
-        planeMat.needsUpdate = true;
-        //console.log(planeMat.map);
-    });
 
 
 
-
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 150; i++) {
         boid = boids[i] = new Boid();
         boid.position.x = Math.random() * 400 - 200;
         boid.position.y = Math.random() * 400 - 200;
@@ -223,14 +224,14 @@ function init() {
         boid.velocity.z = Math.random() * 2 - 1;
         boid.setAvoidWalls(true);
         boid.setWorldSize(500, 500, 400);
-        bird = birds[i] = new THREE.Mesh(new Plane(), planeMat);
-        bird.geometry.scale(2, 2, 2);
-        scene.add(bird);
+        plane = planes[i] = new THREE.Mesh(new Plane(), planeMat);
+        plane.geometry.scale(4, 4, 6);
+        scene.add(plane);
     }
 
 
     renderer = new THREE.WebGLRenderer();
-    renderer.setClearColor(0xCCCCCC, 2);
+    renderer.setClearColor(0xFFFFFF, 1);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     document.addEventListener('mousemove', onDocumentMouseMove, false);
@@ -260,18 +261,15 @@ function animate() {
 }
 
 function render() {
-    for (var i = 0, il = birds.length; i < il; i++) {
+    for (var i = 0, il = planes.length; i < il; i++) {
         boid = boids[i];
         boid.run(boids);
-        bird = birds[i];
-        bird.position.copy(boids[i].position);
-        //color = bird.material.color;
-        // color.r = color.g = color.b = (500 - bird.position.z) / 1000;
-        //console.log(color.r);
-        bird.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
-        bird.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
-        // bird.phase = (bird.phase + (Math.max(0, bird.rotation.z) + 0.1)) % 62.83;
-        // bird.geometry.vertices[5].y = bird.geometry.vertices[4].y = Math.sin(bird.phase) * 5;
+        plane = planes[i];
+        plane.position.copy(boids[i].position);
+
+        plane.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
+        plane.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
+
     }
     renderer.render(scene, camera);
 }
