@@ -4,7 +4,7 @@ var Plane = function() {
 
     THREE.Geometry.call(this);
 
-    v(16, 0, 0);
+    v(10, 0, 0);
     v(0, 0, -4);
     v(0, 0, -1);
     v(0, -4, 0);

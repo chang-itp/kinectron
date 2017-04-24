@@ -3,7 +3,7 @@ var Boid = function() {
         _acceleration, _width = 500,
         _height = 500,
         _depth = 200,
-        _goal, _neighborhoodRadius = 100,
+        _goal, _neighborhoodRadius = 25,
         _maxSpeed = 4,
         _maxSteerForce = 0.1,
         _avoidWalls = false;
@@ -225,7 +225,7 @@ function init() {
         boid.setAvoidWalls(true);
         boid.setWorldSize(500, 500, 400);
         plane = planes[i] = new THREE.Mesh(new Plane(), planeMat);
-        plane.geometry.scale(4, 4, 6);
+        plane.geometry.scale(4, 4, 4);
         scene.add(plane);
     }
 
