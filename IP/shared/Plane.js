@@ -7,14 +7,28 @@ var Plane = function() {
     v(16, 0, 0);
     v(0, 0, -4);
     v(0, 0, -1);
-    v(0, -2, 0);
+    v(0, -4, 0);
     v(0, 0, 1);
     v(0, 0, 4);
+    //houdu
+    v(-0.2, 0, -1.2);
+    v(-0.2, 0, 1.2);
 
-    f3(0, 1, 2);
-    f3(0, 2, 3);
-    f3(0, 4, 3);
-    f3(0, 4, 5);
+    //top
+    f3(0, 1, 2, 0x00ff00);
+    f3(0, 2, 3, 0x00ff00);
+    f3(0, 4, 3, 0x00ff00);
+    f3(0, 4, 5, 0x00ff00);
+    //bottom
+    f3(0, 1, 6);
+    f3(0, 6, 3);
+    f3(0, 3, 7);
+    f3(0, 7, 5);
+    //back
+    f3(1, 2, 6);
+    f3(2, 6, 3);
+    f3(3, 4, 7);
+    f3(4, 7, 5);
 
     this.computeFaceNormals();
 
@@ -24,10 +38,11 @@ var Plane = function() {
 
     }
 
-    function f3(a, b, c) {
-
-        scope.faces.push(new THREE.Face3(a, b, c));
-
+    function f3(a, b, c, color = 0xff0000) {
+        var face = new THREE.Face3(a, b, c);
+        face.color = new THREE.Color(color);
+        scope.faces.push(face);
+        return face;
     }
 
 }

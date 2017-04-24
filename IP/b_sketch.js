@@ -185,17 +185,25 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
     camera.position.z = 450;
     scene = new THREE.Scene();
+    // White directional light at half intensity shining from the top.
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    directionalLight.position.x = 0;
+    directionalLight.position.y = 0;
+    directionalLight.position.z = 500;
+    scene.add(directionalLight);
+
     birds = [];
     boids = [];
 
     var textureLoader = new THREE.TextureLoader();
-
-    planeMat = new THREE.MeshBasicMaterial({
-        // color: Math.random() * 0xCCCCFF,
+    //
+    planeMat = new THREE.MeshStandardMaterial({
+        //color: Math.random()*0xCCCCFF,
+        vertexColors: THREE.FaceColors,
         side: THREE.DoubleSide
     });
-
-    textureLoader.load("./planetexture/yellowp.jpg", function(map) {
+    //
+    textureLoader.load("./planetexture/fold.jpg", function(map) {
         map.anisotropy = 4;
         planeMat.map = map;
         planeMat.needsUpdate = true;
@@ -205,7 +213,7 @@ function init() {
 
 
 
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 100; i++) {
         boid = boids[i] = new Boid();
         boid.position.x = Math.random() * 400 - 200;
         boid.position.y = Math.random() * 400 - 200;
@@ -216,12 +224,13 @@ function init() {
         boid.setAvoidWalls(true);
         boid.setWorldSize(500, 500, 400);
         bird = birds[i] = new THREE.Mesh(new Plane(), planeMat);
+        bird.geometry.scale(2, 2, 2);
         scene.add(bird);
     }
 
 
     renderer = new THREE.WebGLRenderer();
-    renderer.setClearColor(0xffffff);
+    renderer.setClearColor(0xCCCCCC, 2);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     document.addEventListener('mousemove', onDocumentMouseMove, false);
@@ -256,8 +265,9 @@ function render() {
         boid.run(boids);
         bird = birds[i];
         bird.position.copy(boids[i].position);
-        color = bird.material.color;
-        color.r = color.g = color.b = (500 - bird.position.z) / 1000;
+        //color = bird.material.color;
+        // color.r = color.g = color.b = (500 - bird.position.z) / 1000;
+        //console.log(color.r);
         bird.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
         bird.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
         // bird.phase = (bird.phase + (Math.max(0, bird.rotation.z) + 0.1)) % 62.83;
