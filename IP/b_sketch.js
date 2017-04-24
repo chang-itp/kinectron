@@ -175,6 +175,7 @@ var SCREEN_WIDTH = window.innerWidth,
     SCREEN_HEIGHT_HALF = SCREEN_HEIGHT / 2;
 var camera, scene, renderer, birds, bird;
 var boid, boids;
+var planeMat;
 
 init();
 animate();
@@ -187,6 +188,23 @@ function init() {
     birds = [];
     boids = [];
 
+    var textureLoader = new THREE.TextureLoader();
+
+    planeMat = new THREE.MeshBasicMaterial({
+        // color: Math.random() * 0xCCCCFF,
+        side: THREE.DoubleSide
+    });
+
+    textureLoader.load("./planetexture/yellowp.jpg", function(map) {
+        map.anisotropy = 4;
+        planeMat.map = map;
+        planeMat.needsUpdate = true;
+        //console.log(planeMat.map);
+    });
+
+
+
+
     for (var i = 0; i < 200; i++) {
         boid = boids[i] = new Boid();
         boid.position.x = Math.random() * 400 - 200;
@@ -197,16 +215,12 @@ function init() {
         boid.velocity.z = Math.random() * 2 - 1;
         boid.setAvoidWalls(true);
         boid.setWorldSize(500, 500, 400);
-        bird = birds[i] = new THREE.Mesh(new Plane(), new THREE.MeshBasicMaterial({
-            color: Math.random() * 0xffffff,
-            side: THREE.DoubleSide
-        }));
-        bird.phase = Math.floor(Math.random() * 62.83);
+        bird = birds[i] = new THREE.Mesh(new Plane(), planeMat);
         scene.add(bird);
     }
 
 
-    renderer = new THREE.CanvasRenderer();
+    renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(0xffffff);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
