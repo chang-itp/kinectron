@@ -214,7 +214,7 @@ function init() {
 
 
 
-    for (var i = 0; i < 150; i++) {
+    for (var i = 0; i < 300; i++) {
         boid = boids[i] = new Boid();
         boid.position.x = Math.random() * 400 - 200;
         boid.position.y = Math.random() * 400 - 200;
